@@ -46,16 +46,17 @@ classdef testplotlyupdate < matlab.unittest.TestCase
             pv = which('plotly_version.m');
             pu = which('plotlyupdate.m');
             for d = 1:length(ply);
-                rmpath(genpath(fileparts(ply{d})))
+                tempdir{d} = fullfile(fileparts(ply{d}),'testplotlyupdate_temp'); 
+                mkdir(tempdir{d}); 
+                movefile(ply{d},tempdir{d});
             end
-            addpath(genpath(fileparts(pv)));
-            addpath(genpath(fileparts(pu)));
             except = plotlyupdate;
             actual = except.identifier;
             expected = 'plotly:missingScript';
             testCase.verifyEqual(actual,expected);
             for d = 1:length(ply);
-                addpath(genpath(fileparts(ply{d})))
+                movefile(fullfile(tempdir{d},'plotly.m'),fileparts(ply{d}));
+                rmdir(tempdir{d})
             end
         end
         
@@ -63,7 +64,7 @@ classdef testplotlyupdate < matlab.unittest.TestCase
         function testAlreadyUp2Date(testCase)
             % remote Plotly API MATLAB Library url
             remote = ['https://raw.githubusercontent.com/plotly/MATLAB-api/',...
-                'master/plotly/plotly_aux/plotly_version.m'];
+                'plotlyclass/plotly/plotly_aux/plotly_version.m'];
             pvContent = urlread(remote);
             pvBounds = strfind(pvContent,'''');
             pvRemote = pvContent(pvBounds(1)+1:pvBounds(2)-1);
@@ -97,7 +98,7 @@ classdef testplotlyupdate < matlab.unittest.TestCase
             clear plotly_version.m;
             testCase.setversion(pvOld);
             remote = ['https://raw.githubusercontent.com/plotly/MATLAB-api/',...
-                'master/plotly/plotly_aux/plotly_version.m'];
+                'plotlyclass/plotly/plotly_aux/plotly_version.m'];
             pvContent = urlread(remote);
             pvBounds = strfind(pvContent,'''');
             pvRemote = pvContent(pvBounds(1)+1:pvBounds(2)-1);
