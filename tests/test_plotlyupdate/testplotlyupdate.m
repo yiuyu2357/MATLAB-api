@@ -134,6 +134,7 @@ classdef testplotlyupdate < matlab.unittest.TestCase
             end
             testCase.verifyEqual(actual,expected);
             for d = 1:length(ply);
+                rmpath(fullfile(fileparts(ply{d}),'testOverwrite'));
                 rmdir(fullfile(fileparts(ply{d}),'testOverwrite'));
             end
         end
