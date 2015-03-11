@@ -4,7 +4,7 @@ function obj = updateErrorbar(obj, errorbarIndex)
 % symmetric: ...[DONE]
 % array: ...[DONE]
 % value: ...[NA]
-% arrayminus: ...{DONE]
+% arrayminus: ...[DONE]
 % valueminus: ...[NA]
 % color: ...[DONE]
 % thickness: ...[DONE]
